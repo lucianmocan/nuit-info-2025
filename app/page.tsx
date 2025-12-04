@@ -1,65 +1,140 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const presidents = [
+    {
+      nom: "Emmanuel Macron",
+      annees: "2017–en cours",
+      description:
+        "A promu la souveraineté numérique européenne pour réduire la dépendance aux géants américains et chinois, en appelant à une 'préférence européenne' dans les technologies comme l'IA et le cloud, tout en maintenant des partenariats avec des entreprises US sans actions directes augmentant la dépendance.",
+      src: "/heads/download.jpeg",
+    },
+    {
+      nom: "François Hollande",
+      annees: "2012–2017",
+      description:
+        "A lancé l'initiative French Tech en 2013 pour booster les startups françaises, inspiré du modèle américain, et visité la Silicon Valley en 2014 pour attirer les talents expatriés, favorisant ainsi des liens plus étroits avec les écosystèmes tech US sans mesures explicitement augmentant la dépendance.",
+      src: "/heads/download (1).jpeg",
+    },
+    {
+      nom: "Nicolas Sarkozy",
+      annees: "2007–2012",
+      description:
+        "A vu Google comme un partenaire pour la numérisation des bibliothèques françaises, allouant des fonds publics en réponse aux efforts de Google, et promu une régulation d'Internet inspirée de modèles globaux, renforçant indirectement l'influence des plateformes américaines en France.",
+      src: "/heads/download (2).jpeg",
+    },
+    {
+      nom: "Jacques Chirac",
+      annees: "1995–2007",
+      description:
+        "A poursuivi une politique d'indépendance technologique européenne, critiquant la domination américaine et promouvant une Europe multipolaire, sans actions spécifiques augmentant la dépendance aux géants US ; au contraire, il a visé à réduire la reliance sur les technologies américaines dans la défense et l'économie.",
+      src: "/heads/download (3).jpeg",
+    },
+    {
+      nom: "François Mitterrand",
+      annees: "1981–1995",
+      description:
+        "A visité la Silicon Valley en 1984 pour rencontrer des leaders tech américains, favorisant des échanges et une ouverture à l'innovation US, tout en nationalisant des industries pour renforcer l'indépendance française, avec un bilan mixte sur la dépendance tech.",
+      src: "/heads/download (4).jpeg",
+    },
+    {
+      nom: "Valéry Giscard d'Estaing",
+      annees: "1974–1981",
+      description:
+        "A promu la 'francisation' des industries, réduisant le contrôle étranger dans les télécoms (comme ITT américain), et favorisé la coopération européenne pour l'autonomie, sans actions directes augmentant la dépendance aux technologies US.",
+      src: "/heads/download (5).jpeg",
+    },
+    {
+      nom: "Georges Pompidou",
+      annees: "1969–1974",
+      description:
+        "A décidé en 1969 de construire des centrales nucléaires basées sur la technologie américaine, rendant la France dépendante de l'uranium enrichi US, marquant un abandon partiel de l'indépendance technologique gaulliste pour des raisons d'efficacité.",
+      src: "/heads/download (6).jpeg",
+    },
+  ];
+
+  interface President {
+    nom: string;
+    annees: string;
+    description: string;
+    src: string;
+  }
+
+  const [modalPresident, setModalPresident] = useState<President | null>(null);
+
+  const openModal = (president: President) => {
+    setModalPresident(president);
+  };
+
+  const closeModal = () => {
+    setModalPresident(null);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+      <main className="flex w-full flex-col items-center justify-center gap-16 p-8 text-center">
+        <h1 className="text-7xl font-bold tracking-tight">JUICE5</h1>
+
+        <div className="flex -space-x-4 pt-8">
+          {presidents.map((president, index) => (
+            <div
+              key={index}
+              className="group relative cursor-pointer"
+              onClick={() => openModal(president)}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <div className="relative h-20 w-20 transform rounded-full border-2 border-black transition-transform duration-300 ease-in-out hover:scale-125">
+                <Image
+                  src={president.src}
+                  alt={president.nom}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        <button className="mt-8 rounded-full bg-white px-8 py-4 text-lg font-semibold text-black transition-transform hover:scale-105">
+          démarrer. c'est français
+        </button>
       </main>
+
+      {modalPresident && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+          onClick={closeModal}
+        >
+          <div
+            className="relative flex w-full max-w-4xl flex-col items-center gap-8 rounded-lg bg-zinc-900 p-8 text-white md:flex-row"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative h-64 w-64 flex-shrink-0 rounded-full border-4 border-white">
+              <Image
+                src={modalPresident.src}
+                alt={modalPresident.nom}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+            <div className="text-left">
+              <h3 className="text-3xl font-bold">{modalPresident.nom}</h3>
+              <p className="text-md text-zinc-400">{modalPresident.annees}</p>
+              <p className="mt-4 text-lg">{modalPresident.description}</p>
+              <button
+                onClick={closeModal}
+                className="mt-6 rounded-full bg-white px-6 py-2 font-semibold text-black"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
