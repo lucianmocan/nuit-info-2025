@@ -38,6 +38,10 @@ export default function TutosLibres() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white p-8">
+    <Link href="/" className="absolute top-8 left-8 group flex items-center gap-2 rounded-full border-2 border-dashed border-white/30 bg-white/5 px-5 py-2.5 text-sm font-medium transition-all hover:rotate-[-5deg] hover:scale-110 hover:border-white hover:bg-white hover:text-black">
+        <span className="transition-transform group-hover:-translate-x-2">←</span>
+        retour au menu
+      </Link>
       <main className="flex w-full max-w-5xl flex-col items-center gap-12 p-4 text-center">
         <h1 className="animate-pulse text-6xl font-bold tracking-tight transition-all hover:scale-110 hover:tracking-wider">
           les tutos libres
