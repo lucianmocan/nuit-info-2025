@@ -364,8 +364,7 @@ export default function Home() {
     {showSnake ? (
       <SnakeGame />
     ) : (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
-        {/* tout ton code normal ici */}
+      <div style={{ display: "none" }}>
       </div>
     )}
     </div>
