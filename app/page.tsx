@@ -64,6 +64,7 @@ export default function Home() {
   }
 
   const [modalPresident, setModalPresident] = useState<President | null>(null);
+  const [showMenu, setShowMenu] = useState(false);
 
   const openModal = (president: President) => {
     setModalPresident(president);
@@ -73,66 +74,238 @@ export default function Home() {
     setModalPresident(null);
   };
 
+  const handleDemarrer = () => {
+    setShowMenu(true);
+  };
+
+  const handleBack = () => {
+    setShowMenu(false);
+  };
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
-      <main className="flex w-full flex-col items-center justify-center gap-16 p-8 text-center">
-        <h1 className="text-7xl font-bold tracking-tight">JUICE5</h1>
+      {!showMenu ? (
+        <main className="flex w-full flex-col items-center justify-center gap-16 p-8 text-center">
+          <h1 className="animate-pulse text-7xl font-bold tracking-tight transition-all hover:scale-110 hover:tracking-wider">
+            JE VOUS AI COMPRIS
+          </h1>
 
-        <div className="flex -space-x-4 pt-8">
-          {presidents.map((president, index) => (
-            <div
-              key={index}
-              className="group relative cursor-pointer"
-              onClick={() => openModal(president)}
+          <div className="relative flex -space-x-4 pt-8">
+            {presidents.map((president, index) => (
+              <div
+                key={index}
+                className="group relative cursor-pointer transition-all hover:z-50"
+                onClick={() => openModal(president)}
+                style={{
+                  zIndex: presidents.length - index,
+                  animation: `float ${2 + index * 0.3}s ease-in-out infinite`,
+                  animationDelay: `${index * 0.2}s`,
+                }}
+              >
+                <div className="relative h-20 w-20 transform rounded-full border-2 border-white/20 transition-all duration-300 ease-in-out hover:scale-[2] hover:rotate-[360deg] hover:border-4 hover:border-white">
+                  <Image
+                    src={president.src}
+                    alt={president.nom}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-full grayscale transition-all duration-300 group-hover:grayscale-0"
+                  />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/0 via-pink-500/0 to-blue-500/0 transition-all duration-300 group-hover:from-purple-500/30 group-hover:via-pink-500/30 group-hover:to-blue-500/30"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={handleDemarrer}
+            className="group relative mt-8 overflow-hidden rounded-full border-4 border-dashed border-white bg-black px-8 py-4 text-lg font-semibold text-white transition-all hover:rotate-2 hover:scale-110 hover:border-solid hover:bg-white hover:text-black"
+          >
+            <span className="relative z-10 transition-all group-hover:tracking-widest">
+              démarrer. c'est français
+            </span>
+          </button>
+
+          <style jsx>{`
+            @keyframes float {
+              0%,
+              100% {
+                transform: translateY(0px);
+              }
+              50% {
+                transform: translateY(-10px);
+              }
+            }
+          `}</style>
+        </main>
+      ) : (
+        <main className="flex w-full max-w-6xl flex-col items-center justify-center gap-8 p-8">
+          <div className="flex w-full items-center justify-between">
+            <button
+              onClick={handleBack}
+              className="group flex items-center gap-2 rounded-full border-2 border-dashed border-white/30 bg-white/5 px-5 py-2.5 text-sm font-medium transition-all hover:rotate-[-5deg] hover:scale-110 hover:border-white hover:bg-white hover:text-black"
             >
-              <div className="relative h-20 w-20 transform rounded-full border-2 border-black transition-transform duration-300 ease-in-out hover:scale-125">
-                <Image
-                  src={president.src}
-                  alt={president.nom}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
-                />
+              <span className="transition-transform group-hover:-translate-x-2">
+                ←
+              </span>
+              nope
+            </button>
+            <h1 className="text-4xl font-bold tracking-tight transition-all hover:scale-110 hover:tracking-widest md:text-5xl">
+              qu'est-ce qu'on fait ?
+            </h1>
+            <div className="w-24"></div>
+          </div>
+
+          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
+            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+              <div className="absolute -right-8 -top-8 text-9xl opacity-5 transition-all group-hover:rotate-12 group-hover:scale-110">
+                💘
+              </div>
+              <div className="relative flex h-full flex-col gap-3">
+                <div className="text-4xl transition-all group-hover:animate-bounce">
+                  💘
+                </div>
+                <h2 className="text-2xl font-bold">tinder pour les francais </h2>
+                <p className="text-sm leading-relaxed text-white/80">
+                  swipe right sur linux, left sur windows. genre tinder mais au lieu de ghoster des gens tu ghostes microsoft
+                </p>
+                <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
+                  let's go <span className="transition-transform group-hover:translate-x-1">→</span>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
 
-        <button className="mt-8 rounded-full bg-white px-8 py-4 text-lg font-semibold text-black transition-transform hover:scale-105">
-          démarrer. c'est français
-        </button>
-      </main>
+            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+              <div className="absolute -left-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:-rotate-12 group-hover:scale-110">
+                📊
+              </div>
+              <div className="relative flex h-full flex-col gap-3">
+                <div className="text-4xl transition-all group-hover:animate-spin">
+                  📊
+                </div>
+                <h2 className="text-2xl font-bold">t'es à quel point vendu ?</h2>
+                <p className="text-sm leading-relaxed text-white/80">
+                  quiz rapide pour savoir si t'es plus dépendant de google que de l'oxygène. spoiler: tu l'es probablement
+                </p>
+                <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
+                  on check <span className="transition-transform group-hover:translate-x-1">→</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+              <div className="absolute -right-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:rotate-180 group-hover:scale-110">
+                🔄
+              </div>
+              <div className="relative flex h-full flex-col gap-3">
+                <div className="text-4xl transition-all group-hover:rotate-180">
+                  🔄
+                </div>
+                <h2 className="text-2xl font-bold">google translate version based</h2>
+                <p className="text-sm leading-relaxed text-white/80">
+                  windows → linux, chrome → firefox, zoom → jitsi. on traduit ta vie numérique en mode open source
+                </p>
+                <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
+                  traduis moi ça <span className="transition-transform group-hover:translate-x-1">→</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+              <div className="absolute -left-8 -top-8 text-9xl opacity-5 transition-all group-hover:-rotate-12 group-hover:scale-110">
+                📚
+              </div>
+              <div className="relative flex h-full flex-col gap-3">
+                <div className="text-4xl transition-all group-hover:animate-pulse">
+                  📚
+                </div>
+                <h2 className="text-2xl font-bold">les tutos d'antoine</h2>
+                <p className="text-sm leading-relaxed text-white/80">
+                  podcasts, vidéos, tout le bordel. genre netflix mais éducatif et ça parle de souveraineté numérique
+                </p>
+                <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
+                  j'y vais <span className="transition-transform group-hover:translate-x-1">→</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="mt-4 text-center text-sm italic text-zinc-500">
+            juice5 — on déconne pas avec la liberté (enfin si un peu)
+          </p>
+        </main>
+      )}
 
       {modalPresident && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
           onClick={closeModal}
         >
           <div
-            className="relative flex w-full max-w-4xl flex-col items-center gap-8 rounded-lg bg-zinc-900 p-8 text-white md:flex-row"
+            className="relative flex w-full max-w-4xl flex-col items-center gap-8 rounded-3xl border-4 border-dashed border-white bg-zinc-900 p-8 text-white shadow-2xl md:flex-row"
             onClick={(e) => e.stopPropagation()}
+            style={{
+              animation: "modalSlideIn 0.5s ease-out",
+            }}
           >
-            <div className="relative h-64 w-64 flex-shrink-0 rounded-full border-4 border-white">
-              <Image
-                src={modalPresident.src}
-                alt={modalPresident.nom}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-full"
-              />
+            <div className="absolute -right-4 -top-4 rotate-12 text-6xl opacity-20">
+              👑
+            </div>
+            <div className="absolute -bottom-4 -left-4 -rotate-12 text-6xl opacity-20">
+              🇫🇷
+            </div>
+            <div className="group relative h-64 w-64 flex-shrink-0">
+              <div className="absolute inset-0 animate-spin-slow rounded-full border-4 border-dashed border-white/30"></div>
+              <div className="relative h-full w-full rounded-full border-4 border-white transition-all group-hover:scale-105">
+                <Image
+                  src={modalPresident.src}
+                  alt={modalPresident.nom}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full grayscale transition-all duration-300 group-hover:grayscale-0"
+                />
+              </div>
             </div>
             <div className="text-left">
-              <h3 className="text-3xl font-bold">{modalPresident.nom}</h3>
-              <p className="text-md text-zinc-400">{modalPresident.annees}</p>
-              <p className="mt-4 text-lg">{modalPresident.description}</p>
+              <h3 className="text-4xl font-bold text-white">
+                {modalPresident.nom}
+              </h3>
+              <p className="text-md mt-2 font-mono text-zinc-400">
+                {modalPresident.annees}
+              </p>
+              <p className="mt-4 text-lg leading-relaxed">
+                {modalPresident.description}
+              </p>
               <button
                 onClick={closeModal}
-                className="mt-6 rounded-full bg-white px-6 py-2 font-semibold text-black"
+                className="mt-6 rounded-full border-2 border-dashed border-white bg-transparent px-6 py-2 font-semibold transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:bg-white hover:text-black"
               >
-                Fermer
+                ça va j'ai compris
               </button>
             </div>
           </div>
+
+          <style jsx>{`
+            @keyframes modalSlideIn {
+              from {
+                opacity: 0;
+                transform: scale(0.8) rotate(-5deg);
+              }
+              to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+              }
+            }
+            @keyframes spin-slow {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+            .animate-spin-slow {
+              animation: spin-slow 3s linear infinite;
+            }
+          `}</style>
         </div>
       )}
     </div>
