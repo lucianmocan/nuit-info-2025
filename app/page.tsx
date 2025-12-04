@@ -1,5 +1,7 @@
 "use client";
 
+import SnakeGame from "./SnakeGame"; // adapte le chemin si besoin
+
 import Image from "next/image";
 import { useState } from "react";
 
@@ -65,6 +67,7 @@ export default function Home() {
 
   const [modalPresident, setModalPresident] = useState<President | null>(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [showSnake, setShowSnake] = useState(false);
 
   const openModal = (president: President) => {
     setModalPresident(president);
@@ -76,11 +79,18 @@ export default function Home() {
 
   const handleDemarrer = () => {
     setShowMenu(true);
+    setShowSnake(false);
   };
 
   const handleBack = () => {
     setShowMenu(false);
+    setShowSnake(false);
   };
+
+  const handleSnake = () => {
+    setShowSnake(true);
+    setShowMenu(false);
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
@@ -228,6 +238,40 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+            <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6"
+            onClick={handleSnake}>
+              <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+                <div className="absolute -right-8 -top-8 text-9xl opacity-5 transition-all group-hover:rotate-12 group-hover:scale-110">
+                    <Image
+                      src="/imgs/snake.png"
+                      alt="Snake BG"
+                      width={120}
+                      height={120}
+                      className="opacity-100"
+                    />
+                </div>
+                <div className="relative flex h-full flex-col gap-3">
+                  <div className="text-4xl transition-all group-hover:animate-bounce">
+                    <Image
+                      src="/imgs/snake.png"
+                      alt="Snake BG"
+                      width={120}
+                      height={120}
+                      className="opacity-100"
+                    />
+                  </div>
+                  <h2 className="text-2xl font-bold">Go play snake you little brat</h2>
+                  <p className="text-sm leading-relaxed text-white/80">
+                    SNAKE
+                  </p>
+                  <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
+                    Snake Go <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           <p className="mt-4 text-center text-sm italic text-zinc-500">
             juice5 — on déconne pas avec la liberté (enfin si un peu)
           </p>
@@ -308,6 +352,14 @@ export default function Home() {
           `}</style>
         </div>
       )}
+
+    {showSnake ? (
+      <SnakeGame />
+    ) : (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+        {/* tout ton code normal ici */}
+      </div>
+    )}
     </div>
   );
 }
