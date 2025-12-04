@@ -8,8 +8,7 @@ export default function TutoSkeleton({ title, emoji, children }) {
       <main className="w-full max-w-3xl flex flex-col gap-8">
         <Link
           href="/tutos"
-          className="group inline-flex w-fit items-center gap-2 rounded-full border-2 border-dashed border-white/30 bg-white/5 px-4 py-1.5 text-sm transition-all hover:scale-110 hover:border-white hover:bg-white hover:text-black"
-        >
+          className="group inline-flex w-fit items-center gap-2 rounded-full border-2 border-dashed border-white/30 bg-white/5 px-4 py-1.5 text-sm transition-all hover:scale-110 hover:border-white hover:bg-white hover:text-black leading-loose">
           ← retour
         </Link>
 
@@ -17,11 +16,8 @@ export default function TutoSkeleton({ title, emoji, children }) {
           <span className="text-6xl">{emoji}</span> {title}
         </h1>
 
-        <div className="rounded-2xl bg-zinc-900 p-6 border border-white/10 shadow-xl leading-relaxed">
-          {children || (
-            <p className="text-white/70 italic">
-            </p>
-          )}
+        <div className="space-y-4 leading-loose">
+          {children}
         </div>
 
         <p className="mt-10 text-center text-sm text-zinc-600 italic">
