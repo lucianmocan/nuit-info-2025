@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -30,12 +30,48 @@ export default function DatingPage() {
     { id: 20, name: "Google", type: "bad", image: "/dating/google.png", description: "Ils savent où tu habites" },
   ];
 
+  const nirdFacts = [
+    "Le numérique émet 4% des gaz à effet de serre mondiaux, soit plus que l'aviation civile.",
+    "Fabriquer un ordinateur de 2kg nécessite 800kg de matières premières.",
+    "La fin du support de Windows 10 en 2025 menace de rendre obsolètes 240 millions de PC.",
+    "NIRD signifie Numérique Inclusif, Responsable et Durable.",
+    "L'école doit former des citoyens éclairés, pas des consommateurs captifs.",
+    "Les logiciels libres sont des biens communs numériques, accessibles à tous."
+  ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [lastSwipe, setLastSwipe] = useState<"smash" | "pass" | null>(null);
+  
+  // Cooldown state
+  const [lastClickTime, setLastClickTime] = useState(0);
+  const [showCooldown, setShowCooldown] = useState(false);
+  const [cooldownTimer, setCooldownTimer] = useState(0);
+  const [cooldownFact, setCooldownFact] = useState("");
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (showCooldown && cooldownTimer > 0) {
+      interval = setInterval(() => {
+        setCooldownTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [showCooldown, cooldownTimer]);
 
   const handleSwipe = (action: "smash" | "pass") => {
+    const now = Date.now();
+    
+    // If clicking too fast (less than 800ms), trigger cooldown
+    if (now - lastClickTime < 800) {
+      setCooldownFact(nirdFacts[Math.floor(Math.random() * nirdFacts.length)]);
+      setCooldownTimer(5);
+      setShowCooldown(true);
+      return;
+    }
+
+    setLastClickTime(now);
     const currentItem = items[currentIndex];
     
     // Logic: 
@@ -56,6 +92,11 @@ export default function DatingPage() {
         setGameOver(true);
       }
     }, 1000);
+  };
+
+  const closeCooldown = () => {
+    setShowCooldown(false);
+    setLastClickTime(Date.now()); // Reset timer to avoid immediate re-trigger
   };
 
   const resetGame = () => {
@@ -169,6 +210,44 @@ export default function DatingPage() {
           >
             recommencer le test
           </button>
+        </div>
+      )}
+      {showCooldown && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+          <div className="max-w-lg w-full bg-zinc-900 rounded-3xl border-4 border-dashed border-red-500 p-8 text-center animate-in zoom-in duration-300">
+            <div className="text-6xl mb-4 animate-bounce">🚨</div>
+            <h3 className="text-3xl font-black text-red-500 mb-2 uppercase">Woah, doucement !</h3>
+            <p className="text-zinc-400 mb-6">Tu swipes plus vite que ton ombre. Prends le temps de lire, c'est pas une course.</p>
+            
+            <div className="bg-zinc-800 rounded-xl p-6 mb-6 border border-zinc-700">
+              <p className="text-lg font-medium text-white italic">"{cooldownFact}"</p>
+            </div>
+
+            <div className="aspect-video w-full overflow-hidden rounded-xl border-2 border-zinc-700 mb-6">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/9CXKU9_TWGY?autoplay=1" 
+                title="Je vous ai compris" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
+            </div>
+
+            {cooldownTimer > 0 ? (
+              <div className="text-4xl font-mono font-bold text-white">
+                {cooldownTimer}s
+              </div>
+            ) : (
+              <button
+                onClick={closeCooldown}
+                className="w-full rounded-full bg-white px-6 py-3 font-bold text-black transition-all hover:scale-105 hover:bg-red-500 hover:text-white"
+              >
+                J'ai compris, je me calme
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>
