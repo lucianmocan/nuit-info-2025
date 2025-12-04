@@ -4,6 +4,7 @@ import SnakeGame from "./SnakeGame"; // adapte le chemin si besoin
 
 import Image from "next/image";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const presidents = [
@@ -166,7 +167,7 @@ export default function Home() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
-            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+                        <Link href="/dating" className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -right-8 -top-8 text-9xl opacity-5 transition-all group-hover:rotate-12 group-hover:scale-110">
                 💘
               </div>
@@ -174,7 +175,7 @@ export default function Home() {
                 <div className="text-4xl transition-all group-hover:animate-bounce">
                   💘
                 </div>
-                <h2 className="text-2xl font-bold">tinder pour les francais </h2>
+                <h2 className="text-2xl font-bold">tinder mais pour les nerds</h2>
                 <p className="text-sm leading-relaxed text-white/80">
                   swipe right sur linux, left sur windows. genre tinder mais au lieu de ghoster des gens tu ghostes microsoft
                 </p>
@@ -182,7 +183,7 @@ export default function Home() {
                   let's go <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
-            </div>
+            </Link>
 
             <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -left-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:-rotate-12 group-hover:scale-110">
