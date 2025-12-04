@@ -175,7 +175,7 @@ export default function Home() {
                 <div className="text-4xl transition-all group-hover:animate-bounce">
                   💘
                 </div>
-                <h2 className="text-2xl font-bold">tinder mais pour les nerds</h2>
+                <h2 className="text-2xl font-bold">tinder pour la résistance</h2>
                 <p className="text-sm leading-relaxed text-white/80">
                   swipe right sur linux, left sur windows. genre tinder mais au lieu de ghoster des gens tu ghostes microsoft
                 </p>
