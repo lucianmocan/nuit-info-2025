@@ -19,13 +19,13 @@ export default function OSSTranslator() {
     { proprietary: "Opera", openSource: "Vivaldi / Firefox", description: "Pas 100% libre, mais bien plus respectueux." },
     { proprietary: "Google Search", openSource: "DuckDuckGo / SearXNG", description: "Cherche sans être le produit." },
     { proprietary: "Bing", openSource: "DuckDuckGo", description: "Même Microsoft ne l'utilise pas vraiment." },
-    
+
     // OS
     { proprietary: "Windows", openSource: "Linux (Ubuntu/Mint)", description: "La liberté, la vraie. Fini les écrans bleus." },
     { proprietary: "macOS", openSource: "Linux (Pop!_OS)", description: "Aussi beau, mais c'est toi le chef." },
     { proprietary: "Android", openSource: "/e/OS / LineageOS", description: "Ton téléphone, sans Google." },
     { proprietary: "iOS", openSource: "GrapheneOS", description: "Sécurité maximale, surveillance minimale." },
-    
+
     // Office & Productivity
     { proprietary: "Microsoft Office", openSource: "LibreOffice", description: "Tout pareil, mais gratuit et libre." },
     { proprietary: "Word", openSource: "LibreOffice Writer", description: "Écris sans trombone qui t'espionne." },
@@ -118,12 +118,12 @@ export default function OSSTranslator() {
     { proprietary: "Alexa", openSource: "Home Assistant", description: "Domotique privée et locale." },
     { proprietary: "Google Home", openSource: "Home Assistant", description: "Ta maison, tes règles." },
     { proprietary: "Google Analytics", openSource: "Matomo / Plausible", description: "Respecte la vie privée de tes visiteurs." },
-    
+
     // Entertainment & Education
     { proprietary: "Spotify", openSource: "Spotube", description: "La musique sans pub et sans tracking." },
     { proprietary: "Netflix", openSource: "Jellyfin", description: "Ton propre Netflix avec tes propres films." },
     { proprietary: "Steam", openSource: "Lutris / Heroic", description: "Lance tes jeux (même Epic/GOG) librement." },
-    { proprietary: "Minecraft", openSource: "Minetest", description: "Le monde de cubes infini et libre." },
+    { proprietary: "Minecraft", openSource: "Luanti", description: "Le monde de cubes infini et libre." },
     { proprietary: "Roblox", openSource: "Veloren", description: "RPG voxel multijoueur open source." },
     { proprietary: "Kindle", openSource: "KOReader", description: "Lis tes ebooks sans DRM." },
     { proprietary: "Audible", openSource: "Audiobookshelf", description: "Tes livres audio, ton serveur." },
@@ -209,7 +209,7 @@ export default function OSSTranslator() {
               <span className="font-bold text-green-500 bg-green-500/10 px-3 py-1 rounded-full text-xs border border-green-500/20">OPEN SOURCE (BASED)</span>
             </div>
             <div className={`relative w-full h-64 bg-zinc-900 rounded-3xl border-4 border-dashed ${result ? 'border-green-500 bg-green-900/10' : 'border-zinc-700'} p-8 flex flex-col justify-center transition-all duration-300`}>
-              
+
               {isThinking ? (
                 <div className="flex flex-col items-center gap-4 text-zinc-500 animate-pulse">
                   <div className="text-4xl">🤔</div>
@@ -248,7 +248,7 @@ export default function OSSTranslator() {
               <span className="text-purple-400 font-bold">Envie d'aller plus loin ?</span> <br/>
               Découvre comment libérer ton école ou ton entreprise de la dépendance aux GAFAM.
             </p>
-            <a 
+            <a
               href="https://nird.forge.apps.education.fr/index.html"
               target="_blank"
               rel="noopener noreferrer"
@@ -257,7 +257,7 @@ export default function OSSTranslator() {
               Découvrir la démarche NIRD ↗
             </a>
           </div>
-          
+
           <p className="text-zinc-500 text-sm italic">
             Propulsé par <span className="font-bold text-white">Fuse.js</span> (parce que télécharger un modèle de 3GB pour ça c'est pas écolo)
           </p>
