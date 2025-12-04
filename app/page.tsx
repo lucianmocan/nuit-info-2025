@@ -1,6 +1,8 @@
 "use client";
 
 import SnakeGame from "./SnakeGame"; // adapte le chemin si besoin
+import BackgroundFloatingImage from "./components/movingImg";
+
 
 import Image from "next/image";
 import { useState } from "react";
@@ -94,6 +96,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+      <BackgroundFloatingImage />
       {!showMenu ? (
         <main className="flex w-full flex-col items-center justify-center gap-16 p-8 text-center">
           <h1 className="animate-pulse text-7xl font-bold tracking-tight transition-all hover:scale-110 hover:tracking-wider">
