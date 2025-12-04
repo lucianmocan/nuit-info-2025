@@ -188,7 +188,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+            <Link href="/quiz" className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -left-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:-rotate-12 group-hover:scale-110">
                 📊
               </div>
@@ -204,7 +204,7 @@ export default function Home() {
                   on check <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
-            </div>
+            </Link>
 
             <Link href="/oss-translate" className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -right-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:rotate-180 group-hover:scale-110">
