@@ -30,7 +30,7 @@ export default function Home() {
       nom: "Jacques Chirac",
       annees: "1995–2007",
       description:
-        "A poursuivi une politique d'indépendance technologique européenne, critiquant la domination américaine et promouvant une Europe multipolaire, sans actions spécifiques augmentant la dépendance aux géants US ; au contraire, il a visé à réduire la reliance sur les technologies américaines dans la défense et l'économie.",
+        "A poursuivi une politique d'indépendance technologique européenne, critiquant la domination américaine et promouvant une Europe multipolaire, sans actions spécifiques augmentant la dépendance aux géants US ; au contraire, il a visé à réduire la dépendances aux technologies américaines dans la défense et l'économie.",
       src: "/heads/download (3).jpeg",
     },
     {
