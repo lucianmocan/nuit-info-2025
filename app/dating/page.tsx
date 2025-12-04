@@ -140,11 +140,34 @@ export default function DatingPage() {
              score > 10 ? "Pas mal, mais tu as encore quelques mouchards dans ta poche." : 
              "C'est la catastrophe. Tu es littéralement un panneau publicitaire ambulant."}
           </p>
+
+          <div className="mt-12 flex flex-col gap-6 items-center max-w-2xl rounded-3xl border-4 border-dashed border-purple-500/50 bg-purple-900/10 p-8">
+            <div className="text-center space-y-4">
+              <h3 className="text-3xl font-black uppercase italic text-purple-400">PASSEZ À L'ACTION</h3>
+              <p className="text-lg text-zinc-300 leading-relaxed">
+                Le "Smash or Pass", c'est marrant 5 minutes. Mais dans la vraie vie, la fin de Windows 10 va bientôt rendre obsolètes des millions de PC scolaires. <br/><br/>
+                <span className="font-bold text-white">La résistance s'organise déjà.</span> Rejoignez le mouvement pour un numérique <span className="text-purple-400 font-bold">Inclusif, Responsable et Durable</span>. Installez Linux, sauvez des ordis, et reprenez le contrôle.
+              </p>
+            </div>
+
+            <a 
+              href="https://nird.forge.apps.education.fr/index.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative overflow-hidden rounded-full border-4 border-white bg-white px-8 py-4 text-xl font-black text-black transition-all hover:scale-105 hover:bg-purple-500 hover:text-white hover:border-purple-500"
+            >
+              <span className="relative z-10">REJOINDRE LA DÉMARCHE NIRD ↗</span>
+            </a>
+            <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
+              pour une école libre et souveraine
+            </p>
+          </div>
+
           <button 
             onClick={resetGame}
-            className="mt-8 rounded-full border-4 border-dashed border-white px-8 py-4 text-xl font-bold transition-all hover:scale-105 hover:bg-white hover:text-black hover:border-solid"
+            className="mt-4 rounded-full border-2 border-dashed border-zinc-700 px-6 py-2 text-sm font-medium text-zinc-500 transition-all hover:border-zinc-500 hover:text-zinc-300"
           >
-            recommencer
+            recommencer le test
           </button>
         </div>
       )}
