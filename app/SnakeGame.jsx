@@ -371,12 +371,12 @@ class SnakeGame extends React.Component {
     }
 
     return (
-      <div
+      <div className='flex'
         id='GameBoard'
         style={{
-          width: this.state.width,
-          height: this.state.height,
-          borderWidth: this.state.width / 50,
+          width: window.width,
+          height: window.height,
+          borderWidth: window.width / 50,
         }}>
         {this.state.snake.map((snakePart, index) => {
           return (
