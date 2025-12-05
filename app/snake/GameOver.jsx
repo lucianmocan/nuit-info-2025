@@ -4,12 +4,9 @@ function GameOver(props) {
   return (
     <div
       id='GameBoard'
-      style={{
-        width: props.width,
-        height: props.height,
-        borderWidth: props.width / 50,
-      }}>
-      <div id='GameOver' style={{ fontSize: props.width / 15 }}>
+      className="responsive-game-board"
+    >
+      <div id='GameOver' className="game-over-content">
         <div id='GameOverText'>GAME OVER</div>
         <div>Your score: {props.score}</div>
         <div>

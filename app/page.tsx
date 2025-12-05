@@ -1,6 +1,6 @@
 "use client";
 
-import SnakeGame from "./SnakeGame"; // adapte le chemin si besoin
+import SnakeGame from "./snake/SnakeGame"; // adapte le chemin si besoin
 import BackgroundFloatingImage from "./components/movingImg";
 
 
@@ -406,12 +406,33 @@ export default function Home() {
         </div>
       )}
 
-    {showSnake ? (
-      <SnakeGame />
-    ) : (
-      <div style={{ display: "none" }}>
-      </div>
-    )}
+      {showSnake && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+          onClick={() => setShowSnake(false)}
+        >
+          <div
+            className="relative flex w-full max-w-4xl flex-col items-center gap-4 rounded-3xl border-4 border-dashed border-white bg-zinc-900 p-8 text-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              animation: "modalSlideIn 0.5s ease-out",
+            }}
+          >
+            <div className="flex w-full items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold">Snake Game</h2>
+              <button
+                onClick={() => setShowSnake(false)}
+                className="rounded-full border-2 border-dashed border-white bg-transparent px-4 py-2 font-semibold transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:bg-white hover:text-black"
+              >
+                fermer
+              </button>
+            </div>
+            <div className="w-full flex justify-center">
+              <SnakeGame percentageWidth={70} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

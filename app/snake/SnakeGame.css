@@ -2,6 +2,10 @@
 	position: relative;
 	margin: auto;
 	border-style: solid;
+	border-color: white;
+	background-color: transparent;
+	display: block;
+	box-sizing: border-box;
 }
 
 #GameBoard .Block {
@@ -32,4 +36,21 @@
 #GameBoard #PressSpaceText {
 	color: #2e7ecb;
 	font-weight: bold;
+}
+
+.responsive-game-board {
+  width: 90vw;
+  max-width: 800px;
+  aspect-ratio: 3 / 2;
+  border-width: clamp(2px, 1vw, 10px);
+  min-width: 300px;
+  min-height: 200px;
+}
+
+.game-over-content {
+  font-size: clamp(1rem, 4vw, 2.5rem);
+}
+
+.game-score {
+  font-size: clamp(0.8rem, 2.5vw, 1.5rem);
 }

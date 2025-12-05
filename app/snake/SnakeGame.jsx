@@ -38,10 +38,14 @@ class SnakeGame extends React.Component {
 
   initGame() {
     // Game size initialization
-    let percentageWidth = this.props.percentageWidth || 40
-    let width =
-      document.getElementById('GameBoard').parentElement.offsetWidth *
-      (percentageWidth / 100)
+    const gameBoard = document.getElementById('GameBoard');
+    if (!gameBoard) {
+      // If the board is not rendered yet, retry in a moment.
+      setTimeout(() => this.initGame(), 100);
+      return;
+    }
+    
+    let width = gameBoard.offsetWidth;
     width -= width % 30
     if (width < 30) width = 30
     let height = (width / 3) * 2
@@ -373,11 +377,8 @@ class SnakeGame extends React.Component {
     return (
       <div
         id='GameBoard'
-        style={{
-          width: this.state.width,
-          height: this.state.height,
-          borderWidth: this.state.width / 50,
-        }}>
+        className="responsive-game-board"
+      >
         {this.state.snake.map((snakePart, index) => {
           return (
             <div
@@ -403,7 +404,7 @@ class SnakeGame extends React.Component {
             background: this.state.appleColor,
           }}
         />
-        <div id='Score' style={{ fontSize: this.state.width / 20 }}>
+        <div id='Score' className="game-score">
           HIGH-SCORE: {this.state.highScore}&ensp;&ensp;&ensp;&ensp;SCORE:{' '}
           {this.state.score}
         </div>
