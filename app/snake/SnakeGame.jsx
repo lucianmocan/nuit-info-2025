@@ -19,19 +19,6 @@ class SnakeGame extends React.Component {
       startSnakeSize: 0,
       snake: [],
       apple: {},
-      appleFrames: [      "/imgs/Apple/apple1.png",
-      "/imgs/Apple/apple2.png",
-      "/imgs/Apple/apple3.png",
-      "/imgs/Apple/apple4.png",
-      "/imgs/Apple/apple5.png",
-      "/imgs/Apple/apple6.png",
-      "/imgs/Apple/apple7.png",
-      "/imgs/Apple/apple8.png",
-      "/imgs/Apple/apple9.png",
-      "/imgs/Apple/apple10.png",
-      "/imgs/Apple/apple11.png",
-      "/imgs/Apple/apple12.png"],
-      appleFrameImage: "/imgs/Apple/apple1.png",
       direction: 'right',
       directionChanged: false,
       isGameOver: false,
@@ -131,6 +118,10 @@ class SnakeGame extends React.Component {
         if (this.state.actualFrame < 1)
         {this.state.actualFrame = 1.2}
         this.state.appleFrameImage = "/imgs/Apple/apple" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeHeadFrameImage = "/imgs/snake_head/snake_head_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeTailFrameImage = "/imgs/snake_tail/snake_tail_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeBodyFrameImage = "/imgs/snake_body/snake_body_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeBendFrameImage = "/imgs/snake_bend/snake_bend_" + Math.round(this.state.actualFrame) + ".png"
         for (let i = 0; i < 1; i++)
         {
           this.moveSnake(this.state.framesPerMove)
@@ -421,20 +412,65 @@ class SnakeGame extends React.Component {
         className="responsive-game-board"
       >
         {this.state.snake.map((snakePart, index) => {
-          return (
-            <div
-              key={index}
-              className='Block'
-              style={{
-                width: this.state.blockWidth,
-                height: this.state.blockHeight,
-                left: snakePart.Xpos,
-                top: snakePart.Ypos,
-                background: this.state.snakeColor,
-              }}
-            />
-          )
-        })}
+  if (index === 0) {
+    // HEAD
+    return (
+      <img
+        key={index}
+        src={this.state.snakeHeadFrameImage}
+        alt="snake head"
+        style={{
+          position: "absolute",
+          width: this.state.blockWidth,
+          height: this.state.blockHeight,
+          left: snakePart.Xpos,
+          top: snakePart.Ypos,
+          objectFit: "cover",
+        }}
+      />
+    )
+  }
+
+  // TAIL
+  if (index === this.state.snake.length - 1) {
+    return (
+      <img
+        key={index}
+        src={this.state.snakeTailFrameImage}
+        alt="snake tail"
+        style={{
+          position: "absolute",
+          width: this.state.blockWidth,
+          height: this.state.blockHeight,
+          left: snakePart.Xpos,
+          top: snakePart.Ypos,
+          objectFit: "cover",
+        }}
+      />
+    )
+  }
+
+  // BODY
+  return (
+      <img
+        key={index}
+        src={this.state.snakeBodyFrameImage}
+        alt="snake body"
+        style={{
+          position: "absolute",
+          width: this.state.blockWidth,
+          height: this.state.blockHeight,
+          left: snakePart.Xpos,
+          top: snakePart.Ypos,
+          objectFit: "cover",
+        }}
+      />
+    )
+  
+
+  
+})}
+
           <img
             src={this.state.appleFrameImage}
             alt="apple"
