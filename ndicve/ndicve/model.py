@@ -31,7 +31,6 @@ class CPE:
 
     @staticmethod
     def from_uri(cpe_uri: str) -> "CPE":
-        print(cpe_uri)
         if not cpe_uri.startswith("cpe:2.3:"):
             raise ValueError("Invalid CPE 2.3 string")
 

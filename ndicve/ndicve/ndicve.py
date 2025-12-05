@@ -2,7 +2,7 @@
 
 import reflex as rx
 
-from .pages.index import index
+from .pages.index import index, search
 from .pages.vuln import vuln
 
 app = rx.App()
