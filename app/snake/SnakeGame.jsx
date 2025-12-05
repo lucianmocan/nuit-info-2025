@@ -18,20 +18,8 @@ class SnakeGame extends React.Component {
       timeoutId: 0,
       startSnakeSize: 0,
       snake: [],
+      walls: [],
       apple: {},
-      appleFrames: [      "/imgs/Apple/apple1.png",
-      "/imgs/Apple/apple2.png",
-      "/imgs/Apple/apple3.png",
-      "/imgs/Apple/apple4.png",
-      "/imgs/Apple/apple5.png",
-      "/imgs/Apple/apple6.png",
-      "/imgs/Apple/apple7.png",
-      "/imgs/Apple/apple8.png",
-      "/imgs/Apple/apple9.png",
-      "/imgs/Apple/apple10.png",
-      "/imgs/Apple/apple11.png",
-      "/imgs/Apple/apple12.png"],
-      appleFrameImage: "/imgs/Apple/apple1.png",
       direction: 'right',
       directionChanged: false,
       isGameOver: false,
@@ -55,61 +43,70 @@ class SnakeGame extends React.Component {
   }
 
   initGame() {
-    // Game size initialization
     const gameBoard = document.getElementById('GameBoard');
     if (!gameBoard) {
-      // If the board is not rendered yet, retry in a moment.
       setTimeout(() => this.initGame(), 100);
       return;
     }
-    
-    const appleFrames = [
-      "/imgs/Apple/apple1.png",
-      "/imgs/Apple/apple2.png",
-      "/imgs/Apple/apple3.png",
-      "/imgs/Apple/apple4.png",
-      "/imgs/Apple/apple5.png",
-      "/imgs/Apple/apple6.png",
-      "/imgs/Apple/apple7.png",
-      "/imgs/Apple/apple8.png",
-      "/imgs/Apple/apple9.png",
-      "/imgs/Apple/apple10.png",
-      "/imgs/Apple/apple11.png",
-      "/imgs/Apple/apple12.png",
-    ];
-
 
     let width = gameBoard.offsetWidth;
-    width -= width % 30
-    if (width < 30) width = 30
-    let height = (width / 3) * 2
-    let blockWidth = width / 30
-    let blockHeight = height / 20
+    width -= width % 30;
+    if (width < 30) width = 30;
 
-    // snake initialization
-    let startSnakeSize = this.props.startSnakeSize || 6
-    let snake = []
-    let Xpos = width / 2
-    let Ypos = height / 2
-    let snakeHead = { Xpos: width / 2, Ypos: height / 2 }
-    snake.push(snakeHead)
+    let height = (width / 3) * 2;
+    let blockWidth = width / 30;
+    let blockHeight = height / 20;
+
+    let startSnakeSize = this.props.startSnakeSize || 6;
+    let snake = [];
+    let Xpos = width / 2;
+    let Ypos = height / 2;
+
+    snake.push({ Xpos, Ypos });
+
     for (let i = 1; i < startSnakeSize; i++) {
-      Xpos -= blockWidth
-      let snakePart = { Xpos: Xpos, Ypos: Ypos }
-      snake.push(snakePart)
+      Xpos -= blockWidth;
+      snake.push({ Xpos, Ypos });
     }
 
-    // apple position initialization
     let appleXpos =
-      Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
-      blockWidth
+      Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) * blockWidth;
     let appleYpos =
-      Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
-      blockHeight
+      Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) * blockHeight;
+
     while (appleYpos === snake[0].Ypos) {
       appleYpos =
         Math.floor(Math.random() * ((height - blockHeight) / blockHeight + 1)) *
-        blockHeight
+        blockHeight;
+    }
+
+    let nbCol = Math.floor(width / blockWidth);
+    let nbLines = Math.floor(height / blockHeight);
+
+    let walls = [];
+
+    for (let i = 0; i < nbLines; i++) {
+      let row = [];
+
+      if (i === 0) {
+        for (let j = 0; j < nbCol; j++) {
+          row.push(`/imgs/Blocs/Blocs${j % 2}.png`);
+        }
+      } else if (i === nbLines - 1) {
+        for (let j = 0; j < nbCol; j++) {
+          row.push(`/imgs/Blocs/Blocs${(i + j) % 2}.png`);
+        }
+      } else {
+        for (let j = 0; j < nbCol; j++) {
+          if (j === 0 || j === nbCol - 1) {
+            row.push(`/imgs/Blocs/Blocs${i % 2}.png`);
+          } else {
+            row.push(`/imgs/Blocs/background.png`);
+          }
+        }
+      }
+
+      walls.push(row);
     }
 
     this.setState({
@@ -119,9 +116,11 @@ class SnakeGame extends React.Component {
       blockHeight,
       startSnakeSize,
       snake,
-      apple: { Xpos: appleXpos, Ypos: appleYpos },
-    })
+      walls,
+      apple: { Xpos: appleXpos, Ypos: appleYpos }
+    });
   }
+
 
   gameLoop() {
     let timeoutId = setTimeout(() => {
@@ -131,6 +130,10 @@ class SnakeGame extends React.Component {
         if (this.state.actualFrame < 1)
         {this.state.actualFrame = 1.2}
         this.state.appleFrameImage = "/imgs/Apple/apple" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeHeadFrameImage = "/imgs/snake_head/snake_head_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeTailFrameImage = "/imgs/snake_tail/snake_tail_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeBodyFrameImage = "/imgs/snake_body/snake_body_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeBendFrameImage = "/imgs/snake_bend/snake_bended_" + Math.round(this.state.actualFrame) + ".png"
         for (let i = 0; i < 1; i++)
         {
           this.moveSnake(this.state.framesPerMove)
@@ -158,7 +161,6 @@ class SnakeGame extends React.Component {
     let blockHeight = this.state.blockHeight
     let apple = this.state.apple
 
-    // snake reset
     let snake = []
     let Xpos = width / 2
     let Ypos = height / 2
@@ -170,7 +172,6 @@ class SnakeGame extends React.Component {
       snake.push(snakePart)
     }
 
-    // apple position reset
     apple.Xpos =
       Math.floor(Math.random() * ((width - blockWidth) / blockWidth + 1)) *
       blockWidth
@@ -402,6 +403,115 @@ class SnakeGame extends React.Component {
     this.setState({ direction: newDirection })
   }
 
+getDirection(from, to) {
+    const { blockWidth, blockHeight } = this.state;
+    
+    // Calculate distance
+    const dx = to.Xpos - from.Xpos;
+    const dy = to.Ypos - from.Ypos;
+
+    // If distance is huge (e.g., > 1 block), they are on opposite sides of screen
+    // If 'to' is way to the right (dx > blockWidth), it actually wrapped left-to-right, so it's on the 'left'
+    if (dx > blockWidth) return 'left';
+    if (dx < -blockWidth) return 'right';
+    if (dy > blockHeight) return 'up';
+    if (dy < -blockHeight) return 'down';
+
+    // Use a small buffer (0.1) to handle potential floating point math issues
+    if (dx > 0.1) return 'right';
+    if (dx < -0.1) return 'left';
+    if (dy > 0.1) return 'down';
+    if (dy < -0.1) return 'up';
+    
+    return null; // Should not happen if objects are adjacent
+  }
+
+getSegmentStyle(index) {
+    const snake = this.state.snake;
+    const current = snake[index];
+    
+    // Base style for all parts
+    let style = {
+      position: "absolute",
+      width: this.state.blockWidth,
+      height: this.state.blockHeight,
+      left: current.Xpos,
+      top: current.Ypos,
+      objectFit: "cover",
+      transformOrigin: "center center",
+    };
+
+    if (index === 0) {
+      let rotation = 0;
+      switch (this.state.direction) {
+        case 'down': rotation = 0; break;
+        case 'left': rotation = 90; break;
+        case 'up': rotation = 180; break;
+        case 'right': rotation = 270; break; 
+      }
+      return { ...style, transform: `rotate(${rotation}deg)`, src: this.state.snakeHeadFrameImage };
+    }
+
+    if (index === snake.length - 1) {
+      const prev = snake[index - 1]; 
+      const directionToPrev = this.getDirection(current, prev);
+      
+      let rotation = 0;
+      switch (directionToPrev) {
+        case 'down': rotation = 0; break;
+        case 'left': rotation = 90; break;
+        case 'up': rotation = 180; break;
+        case 'right': rotation = 270; break;
+      }
+      return { ...style, transform: `rotate(${rotation}deg)`, src: this.state.snakeTailFrameImage };
+    }
+
+    const prev = snake[index - 1]; 
+    const next = snake[index + 1]; 
+    
+    const dirToPrev = this.getDirection(current, prev);
+    const dirToNext = this.getDirection(current, next);
+
+    // Sort the directions alphabetically to make checking easier
+    // e.g. "down" and "right" becomes "down-right"
+    // e.g. "right" and "down" ALSO becomes "down-right"
+    const cornerKey = [dirToPrev, dirToNext].sort().join('-');
+
+    // If the directions are opposites, it's a straight line
+    if (cornerKey === 'down-up') {
+      return { ...style, transform: `rotate(0deg)`, src: this.state.snakeBodyFrameImage };
+    }
+    if (cornerKey === 'left-right') {
+      return { ...style, transform: `rotate(90deg)`, src: this.state.snakeBodyFrameImage };
+    }
+
+    // Default Bend Image: Connects SOUTH (Down) and EAST (Right)
+    let rotation = 0;
+
+    switch (cornerKey) {
+      case 'down-right': // Connects Bottom and Right
+        rotation = 0;
+        break;
+      case 'down-left':  // Connects Bottom and Left
+        rotation = 90;
+        break;
+      case 'left-up':    // Connects Top and Left
+        rotation = 180;
+        break;
+      case 'right-up':   // Connects Top and Right
+        rotation = 270;
+        break;
+      default:
+        rotation = 0;
+    }
+
+    return { 
+      ...style, 
+      transform: `rotate(${rotation}deg)`, 
+      src: this.state.snakeBendFrameImage 
+    };
+  }
+
   render() {
     // Game over
     if (this.state.isGameOver) {
@@ -413,48 +523,78 @@ class SnakeGame extends React.Component {
           newHighScore={this.state.newHighScore}
           score={this.state.score}
         />
-      )
+      );
     }
+
     return (
-      <div
-        id='GameBoard'
-        className="responsive-game-board"
-      >
-        {this.state.snake.map((snakePart, index) => {
-          return (
-            <div
-              key={index}
-              className='Block'
+      <div id="GameBoard" className="responsive-game-board">
+
+        {/* BACKGROUND GRID */}
+        {this.state.walls.map((row, rowIndex) =>
+          row.map((tileSrc, colIndex) => (
+            <img
+              key={`wall-${rowIndex}-${colIndex}`}
+              src={tileSrc}
+              alt="wall tile"
               style={{
+                position: "absolute",
                 width: this.state.blockWidth,
                 height: this.state.blockHeight,
-                left: snakePart.Xpos,
-                top: snakePart.Ypos,
-                background: this.state.snakeColor,
+                left: colIndex * this.state.blockWidth,
+                top: rowIndex * this.state.blockHeight,
+                objectFit: "cover",
+                pointerEvents: "none"
               }}
             />
-          )
-        })}
-          <img
-            src={this.state.appleFrameImage}
-            alt="apple"
-            style={{
-              position: "absolute",
-              width: this.state.blockWidth,
-              height: this.state.blockHeight,
-              left: this.state.apple.Xpos,
-              top: this.state.apple.Ypos,
-              objectFit: "cover",
-            }}
-          />
+          ))
+        )}
 
-        <div id='Score' className="game-score">
-          HIGH-SCORE: {this.state.highScore}&ensp;&ensp;&ensp;&ensp;SCORE:{' '}
-          {this.state.score}
+        {/* SNAKE */}
+        {this.state.snake.map((snakePart, index) => {
+          const partStyle = this.getSegmentStyle(index);
+          return (
+            <img
+              key={index}
+              src={partStyle.src}
+              alt="snake part"
+              style={{
+                position: partStyle.position,
+                width: partStyle.width,
+                height: partStyle.height,
+                left: partStyle.left,
+                top: partStyle.top,
+                objectFit: partStyle.objectFit,
+                transform: partStyle.transform,
+                transformOrigin: partStyle.transformOrigin
+              }}
+            />
+          );
+        })}
+
+        {/* APPLE */}
+        <img
+          src={this.state.appleFrameImage}
+          alt="apple"
+          style={{
+            position: "absolute",
+            width: this.state.blockWidth,
+            height: this.state.blockHeight,
+            left: this.state.apple.Xpos,
+            top: this.state.apple.Ypos,
+            objectFit: "cover"
+          }}
+        />
+
+        {/* SCORE */}
+        <div id="Score" className="game-score">
+          HIGH-SCORE: {this.state.highScore}
+          &ensp;&ensp;&ensp;&ensp;
+          SCORE: {this.state.score}
         </div>
       </div>
-    )
+    );
   }
+
 }
 
 export default SnakeGame
