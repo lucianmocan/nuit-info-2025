@@ -5,7 +5,7 @@ import BackgroundFloatingImage from "./components/movingImg";
 
 
 import Image from "next/image";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -21,6 +21,7 @@ function PageContent() {
       description:
         "A promu la souveraineté numérique européenne pour réduire la dépendance aux géants américains et chinois, en appelant à une 'préférence européenne' dans les technologies comme l'IA et le cloud, tout en maintenant des partenariats avec des entreprises US sans actions directes augmentant la dépendance.",
       src: "/heads/download.jpeg",
+      audioSrc: "/audio/emmanuelle_poudre_de_perlim.MP3",
     },
     {
       nom: "François Hollande",
@@ -28,6 +29,7 @@ function PageContent() {
       description:
         "A lancé l'initiative French Tech en 2013 pour booster les startups françaises, inspiré du modèle américain, et visité la Silicon Valley en 2014 pour attirer les talents expatriés, favorisant ainsi des liens plus étroits avec les écosystèmes tech US sans mesures explicitement augmentant la dépendance.",
       src: "/heads/download (1).jpeg",
+      audioSrc: "/audio/Hollande.mp3",
     },
     {
       nom: "Nicolas Sarkozy",
@@ -35,6 +37,7 @@ function PageContent() {
       description:
         "A vu Google comme un partenaire pour la numérisation des bibliothèques françaises, allouant des fonds publics en réponse aux efforts de Google, et promu une régulation d'Internet inspirée de modèles globaux, renforçant indirectement l'influence des plateformes américaines en France.",
       src: "/heads/download (2).jpeg",
+      audioSrc: "/audio/sarko_jambon.MP3",
     },
     {
       nom: "Jacques Chirac",
@@ -42,6 +45,7 @@ function PageContent() {
       description:
         "A poursuivi une politique d'indépendance technologique européenne, critiquant la domination américaine et promouvant une Europe multipolaire, sans actions spécifiques augmentant la dépendance aux géants US ; au contraire, il a visé à réduire la dépendances aux technologies américaines dans la défense et l'économie.",
       src: "/heads/download (3).jpeg",
+      audioSrc: "/audio/Chirac_pommes.MP3",
     },
     {
       nom: "François Mitterrand",
@@ -49,6 +53,7 @@ function PageContent() {
       description:
         "A visité la Silicon Valley en 1984 pour rencontrer des leaders tech américains, favorisant des échanges et une ouverture à l'innovation US, tout en nationalisant des industries pour renforcer l'indépendance française, avec un bilan mixte sur la dépendance tech.",
       src: "/heads/download (4).jpeg",
+      audioSrc: "/audio/miterrand_homme_passif.MP3",
     },
     {
       nom: "Valéry Giscard d'Estaing",
@@ -56,6 +61,7 @@ function PageContent() {
       description:
         "A promu la 'francisation' des industries, réduisant le contrôle étranger dans les télécoms (comme ITT américain), et favorisé la coopération européenne pour l'autonomie, sans actions directes augmentant la dépendance aux technologies US.",
       src: "/heads/download (5).jpeg",
+      audioSrc: "/audio/Valery_au_revoir.mp3",
     },
     {
       nom: "Georges Pompidou",
@@ -64,6 +70,14 @@ function PageContent() {
         "A décidé en 1969 de construire des centrales nucléaires basées sur la technologie américaine, rendant la France dépendante de l'uranium enrichi US, marquant un abandon partiel de l'indépendance technologique gaulliste pour des raisons d'efficacité.",
       src: "/heads/download (6).jpeg",
     },
+    {
+      nom: "Charles de Gaulle",
+      annees: "1959–1969",
+      description:
+        "A promu l'indépendance nationale et technologique de la France, cherchant à réduire la dépendance envers les États-Unis. Il a lancé des projets comme le Plan Calcul pour développer une industrie informatique française et a doté la France de l'arme nucléaire pour garantir sa souveraineté.",
+      src: "/heads/download (9).jpeg",
+      audioSrc: "/audio/de_gaule_compris.MP3",
+    },
   ];
 
   interface President {
@@ -71,11 +85,13 @@ function PageContent() {
     annees: string;
     description: string;
     src: string;
+    audioSrc?: string;
   }
 
   const [modalPresident, setModalPresident] = useState<President | null>(null);
   const [showMenu, setShowMenu] = useState(false);
   const [showSnake, setShowSnake] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (viewParam === "menu") {
@@ -85,10 +101,23 @@ function PageContent() {
 
   const openModal = (president: President) => {
     setModalPresident(president);
+    if (president.audioSrc) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      const audio = new Audio(president.audioSrc);
+      audio.play();
+      audioRef.current = audio;
+    }
   };
 
   const closeModal = () => {
     setModalPresident(null);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
   };
 
   const handleDemarrer = () => {
@@ -134,10 +163,10 @@ function PageContent() {
             <span className="absolute -left-24 top-1/2 -translate-y-1/2 select-none text-9xl font-serif text-zinc-700 opacity-50">
               «
             </span>
-            <h1 
+            <h1
               key={currentQuoteIndex}
               className="relative z-10 text-7xl md:text-8xl font-bold tracking-tight text-white transition-all hover:scale-110 hover:tracking-wider"
-              style={{ 
+              style={{
                 fontFamily: quotes[currentQuoteIndex].font,
                 animation: `${quotes[currentQuoteIndex].animation} 1.5s cubic-bezier(0.25, 1, 0.5, 1) both`
               }}
@@ -279,15 +308,16 @@ function PageContent() {
                 <div className="text-4xl transition-all group-hover:animate-pulse">
                   📚
                 </div>
-                <h2 className="text-2xl font-bold">les tutos d'antoine</h2>
+                <h2 className="text-2xl font-bold">les tutos d'antoine (et plus)</h2>
                 <p className="text-sm leading-relaxed text-white/80">
-                  podcasts, vidéos, tout le bordel. genre netflix mais éducatif et ça parle de souveraineté numérique
+                  documentation, podcasts, vidéos, tout le bordel.
                 </p>
                 <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
                   j'y vais <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
             </Link>
+
           </div>
           <p className="mt-4 text-center text-sm italic text-zinc-500">
             juice5 — on déconne pas avec la liberté (enfin si un peu)

@@ -7,33 +7,18 @@ import { useState } from "react";
 export default function TutosLibres() {
   const tutos = [
     {
-      titre: "Installer Linux (Ubuntu)",
+      titre: "Installer Linux",
       description:
-        "Guide simple pour installer Ubuntu sur ton PC sans prise de tête.",
+        "Guide simple pour installer Linux sur ton PC sans prise de tête.",
       emoji: "🐧",
       href: "/tutos/linux-install",
     },
     {
-      titre: "Passer de Chrome à Firefox",
-      description:
-        "Exporter tes données, installer les extensions et retrouver tes marques.",
-      emoji: "🦊",
-      href: "/tutos/firefox",
-    },
-    {
-      titre: "Héberger tes fichiers avec Nextcloud",
-      description:
-        "Créer ta propre alternative libre à Google Drive, chez toi ou en ligne.",
-      emoji: "☁️",
-      href: "/tutos/nextcloud",
-    },
-    {
-      titre: "Passer à LibreOffice",
-      description:
-        "Ouvrir, modifier et exporter tous tes documents sans Microsoft Office.",
-      emoji: "📄",
-      href: "/tutos/libreoffice",
-    },
+      titre: "Podcasts",
+      description: "Écoutez nos podcasts sur la souveraineté numérique et l'open source.",
+      emoji: "🎙️",
+      href: "/tutos/podcasts",
+    }
   ];
 
   return (
@@ -44,7 +29,7 @@ export default function TutosLibres() {
       </Link>
       <main className="flex w-full max-w-5xl flex-col items-center gap-12 p-4 text-center">
         <h1 className="animate-pulse text-6xl font-bold tracking-tight transition-all hover:scale-110 hover:tracking-wider">
-          les tutos libres
+          les ressources libres
         </h1>
 
         <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
