@@ -1,8 +1,19 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 
-export default function TutoSkeleton({ title, emoji, children }) {
+interface TutoSkeletonProps {
+  title: string;
+  emoji: string;
+  children: React.ReactNode;
+}
+
+export default function TutoSkeleton({
+  title,
+  emoji,
+  children,
+}: TutoSkeletonProps) {
   return (
     <div className="flex min-h-screen flex-col items-center bg-black text-white p-8">
       <main className="w-full max-w-3xl flex flex-col gap-8">
