@@ -27,6 +27,7 @@ class SnakeGame extends React.Component {
       score: 0,
       highScore: Number(localStorage.getItem('snakeHighScore')) || 0,
       newHighScore: false,
+      framesPerMove: 5,
     }
   }
 
@@ -92,7 +93,10 @@ class SnakeGame extends React.Component {
   gameLoop() {
     let timeoutId = setTimeout(() => {
       if (!this.state.isGameOver) {
-        this.moveSnake()
+        for (let i = 0; i < 1; i++)
+        {
+          this.moveSnake(this.state.framesPerMove)
+        }
         this.tryToEatSnake()
         this.tryToEatApple()
         this.setState({ directionChanged: false })
@@ -165,13 +169,13 @@ class SnakeGame extends React.Component {
     return color
   }
 
-  moveSnake() {
+  moveSnake(nbFrames) {
     let snake = this.state.snake
     let previousPartX = this.state.snake[0].Xpos
     let previousPartY = this.state.snake[0].Ypos
     let tmpPartX = previousPartX
     let tmpPartY = previousPartY
-    this.moveHead()
+    this.moveHead(nbFrames)
     for (let i = 1; i < snake.length; i++) {
       tmpPartX = snake[i].Xpos
       tmpPartY = snake[i].Ypos
@@ -257,23 +261,23 @@ class SnakeGame extends React.Component {
     return false
   }
 
-  moveHead() {
+  moveHead(nbFrames) {
     switch (this.state.direction) {
       case 'left':
-        this.moveHeadLeft()
+        this.moveHeadLeft(nbFrames)
         break
       case 'up':
-        this.moveHeadUp()
+        this.moveHeadUp(nbFrames)
         break
       case 'right':
-        this.moveHeadRight()
+        this.moveHeadRight(nbFrames)
         break
       default:
-        this.moveHeadDown()
+        this.moveHeadDown(nbFrames)
     }
   }
 
-  moveHeadLeft() {
+  moveHeadLeft(nbFrames) {
     let width = this.state.width
     let blockWidth = this.state.blockWidth
     let snake = this.state.snake
@@ -282,7 +286,7 @@ class SnakeGame extends React.Component {
     this.setState({ snake })
   }
 
-  moveHeadUp() {
+  moveHeadUp(nbFrames) {
     let height = this.state.height
     let blockHeight = this.state.blockHeight
     let snake = this.state.snake
@@ -291,7 +295,7 @@ class SnakeGame extends React.Component {
     this.setState({ snake })
   }
 
-  moveHeadRight() {
+  moveHeadRight(nbFrames) {
     let width = this.state.width
     let blockWidth = this.state.blockWidth
     let snake = this.state.snake
@@ -300,7 +304,7 @@ class SnakeGame extends React.Component {
     this.setState({ snake })
   }
 
-  moveHeadDown() {
+  moveHeadDown(nbFrames) {
     let height = this.state.height
     let blockHeight = this.state.blockHeight
     let snake = this.state.snake
