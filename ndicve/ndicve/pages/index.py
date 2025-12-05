@@ -10,8 +10,22 @@ import ndicve.model as m
 class State(rx.State):
     """The app state."""
 
-    cves: List[m.Vulnerability] = cve.get_cves()
-    data = cve.get_chart_data()
+    page: int = 0
+    cves: List[m.Vulnerability] = []
+    data = []
+
+    def prev(self):
+        if self.page > 0:
+            self.page -= 1
+            self.reload_data()
+
+    def next(self):
+        self.page += 1
+        self.reload_data()
+
+    def reload_data(self):
+        self.cves: List[m.Vulnerability] = cve.get_cves(self.page)
+        self.data = cve.get_chart_data(self.page)
 
 
 def bar_simple():
@@ -30,7 +44,7 @@ def bar_simple():
     )
 
 
-@rx.page(route="/")
+@rx.page(route="/", on_load=State.reload_data)
 def index() -> rx.Component:
     # Welcome Page (Index)
     return rx.vstack(
@@ -59,6 +73,19 @@ def index() -> rx.Component:
             spacing="5",
             align="center",
             justify="center",
+        ),
+        rx.flex(
+            rx.button(
+                "Previous",
+                size="4",
+                on_click=State.prev,
+                disabled=State.page == 0,
+            ),
+            rx.badge(rx.text((State.page + 1).to(str), size="5")),
+            rx.button("Next", size="4", on_click=State.next),
+            justify="between",
+            align="center",
+            width="50%",
         ),
         min_height="85vh",
         width="100%",
