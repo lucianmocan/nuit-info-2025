@@ -1,12 +1,19 @@
 "use client";
 
-import SnakeGame from "./SnakeGame"; // adapte le chemin si besoin
+import SnakeGame from "./snake/SnakeGame"; // adapte le chemin si besoin
+import BackgroundFloatingImage from "./components/movingImg";
+
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const viewParam = searchParams.get("view");
+
   const presidents = [
     {
       nom: "Emmanuel Macron",
@@ -70,6 +77,12 @@ export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
   const [showSnake, setShowSnake] = useState(false);
 
+  useEffect(() => {
+    if (viewParam === "menu") {
+      setShowMenu(true);
+    }
+  }, [viewParam]);
+
   const openModal = (president: President) => {
     setModalPresident(president);
   };
@@ -86,6 +99,7 @@ export default function Home() {
   const handleBack = () => {
     setShowMenu(false);
     setShowSnake(false);
+    router.push("/");
   };
 
   const handleSnake = () => {
@@ -93,13 +107,47 @@ export default function Home() {
     setShowMenu(false);
   }
 
+  const quotes = [
+    { text: "Je vous ai compris", font: "var(--font-pinyon)", animation: "pptZoom" },
+    { text: "Mangez des pommes", font: "var(--font-great-vibes)", animation: "pptSlideLeft" },
+    { text: "La force tranquille", font: "var(--font-parisienne)", animation: "pptFadeUp" },
+    { text: "Le changement c'est maintenant", font: "var(--font-allura)", animation: "pptSpin" },
+    { text: "Parce que c'est notre projet", font: "var(--font-tangerine)", animation: "pptBounce" },
+    { text: "Au revoir", font: "var(--font-pinyon)", animation: "pptFlip" },
+  ];
+
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuoteIndex((prev) => (prev + 1) % quotes.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
+      <BackgroundFloatingImage />
       {!showMenu ? (
         <main className="flex w-full flex-col items-center justify-center gap-16 p-8 text-center">
-          <h1 className="animate-pulse text-7xl font-bold tracking-tight transition-all hover:scale-110 hover:tracking-wider">
-            JE VOUS AI COMPRIS
-          </h1>
+          <div className="relative h-40 flex items-center justify-center">
+            <span className="absolute -left-24 top-1/2 -translate-y-1/2 select-none text-9xl font-serif text-zinc-700 opacity-50">
+              «
+            </span>
+            <h1 
+              key={currentQuoteIndex}
+              className="relative z-10 text-7xl md:text-8xl font-bold tracking-tight text-white transition-all hover:scale-110 hover:tracking-wider"
+              style={{ 
+                fontFamily: quotes[currentQuoteIndex].font,
+                animation: `${quotes[currentQuoteIndex].animation} 1.5s cubic-bezier(0.25, 1, 0.5, 1) both`
+              }}
+            >
+              {quotes[currentQuoteIndex].text}
+            </h1>
+            <span className="absolute -right-24 top-1/2 -translate-y-1/2 select-none text-9xl font-serif text-zinc-700 opacity-50">
+              »
+            </span>
+          </div>
 
           <div className="relative flex -space-x-4 pt-8">
             {presidents.map((president, index) => (
@@ -139,13 +187,15 @@ export default function Home() {
           <style jsx>{`
             @keyframes float {
               0%,
-              100% {
-                transform: translateY(0px);
-              }
-              50% {
-                transform: translateY(-10px);
-              }
+              100% { transform: translateY(0px); }
+              50% { transform: translateY(-10px); }
             }
+            @keyframes pptZoom { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+            @keyframes pptSlideLeft { from { transform: translateX(-100vw) rotate(-10deg); opacity: 0; } to { transform: translateX(0) rotate(0); opacity: 1; } }
+            @keyframes pptFadeUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            @keyframes pptSpin { from { transform: rotate(-180deg) scale(0); opacity: 0; } to { transform: rotate(0) scale(1); opacity: 1; } }
+            @keyframes pptBounce { 0% { transform: translateY(-100px); opacity: 0; } 60% { transform: translateY(20px); opacity: 1; } 100% { transform: translateY(0); } }
+            @keyframes pptFlip { from { transform: perspective(400px) rotateX(90deg); opacity: 0; } to { transform: perspective(400px) rotateX(0); opacity: 1; } }
           `}</style>
         </main>
       ) : (
@@ -175,7 +225,7 @@ export default function Home() {
                 <div className="text-4xl transition-all group-hover:animate-bounce">
                   💘
                 </div>
-                <h2 className="text-2xl font-bold">tinder mais pour les nerds</h2>
+                <h2 className="text-2xl font-bold">tinder pour la résistance</h2>
                 <p className="text-sm leading-relaxed text-white/80">
                   swipe right sur linux, left sur windows. genre tinder mais au lieu de ghoster des gens tu ghostes microsoft
                 </p>
@@ -185,7 +235,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+            <Link href="/quiz" className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -left-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:-rotate-12 group-hover:scale-110">
                 📊
               </div>
@@ -201,9 +251,9 @@ export default function Home() {
                   on check <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
-            </div>
+            </Link>
 
-            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+            <Link href="/oss-translate" className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:-rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -right-8 -bottom-8 text-9xl opacity-5 transition-all group-hover:rotate-180 group-hover:scale-110">
                 🔄
               </div>
@@ -211,7 +261,7 @@ export default function Home() {
                 <div className="text-4xl transition-all group-hover:rotate-180">
                   🔄
                 </div>
-                <h2 className="text-2xl font-bold">google translate version based</h2>
+                <h2 className="text-2xl font-bold">freeslator version based</h2>
                 <p className="text-sm leading-relaxed text-white/80">
                   windows → linux, chrome → firefox, zoom → jitsi. on traduit ta vie numérique en mode open source
                 </p>
@@ -219,9 +269,9 @@ export default function Home() {
                   traduis moi ça <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
-            </div>
+            </Link>
 
-            <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
+            <Link href="/tutos" className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
               <div className="absolute -left-8 -top-8 text-9xl opacity-5 transition-all group-hover:-rotate-12 group-hover:scale-110">
                 📚
               </div>
@@ -237,42 +287,8 @@ export default function Home() {
                   j'y vais <span className="transition-transform group-hover:translate-x-1">→</span>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
-
-            <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6"
-            onClick={handleSnake}>
-              <div className="group relative cursor-pointer overflow-hidden rounded-2xl border-4 border-dashed border-white/20 bg-zinc-900 p-6 transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:border-white hover:bg-zinc-800">
-                <div className="absolute -right-8 -top-8 text-9xl opacity-5 transition-all group-hover:rotate-12 group-hover:scale-110">
-                    <Image
-                      src="/imgs/snake.png"
-                      alt="Snake BG"
-                      width={120}
-                      height={120}
-                      className="opacity-100"
-                    />
-                </div>
-                <div className="relative flex h-full flex-col gap-3">
-                  <div className="text-4xl transition-all group-hover:animate-bounce">
-                    <Image
-                      src="/imgs/snake.png"
-                      alt="Snake BG"
-                      width={120}
-                      height={120}
-                      className="opacity-100"
-                    />
-                  </div>
-                  <h2 className="text-2xl font-bold">Go play snake you little brat</h2>
-                  <p className="text-sm leading-relaxed text-white/80">
-                    SNAKE
-                  </p>
-                  <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
-                    Snake Go <span className="transition-transform group-hover:translate-x-1">→</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           <p className="mt-4 text-center text-sm italic text-zinc-500">
             juice5 — on déconne pas avec la liberté (enfin si un peu)
           </p>
@@ -354,13 +370,33 @@ export default function Home() {
         </div>
       )}
 
-    {showSnake ? (
-      <SnakeGame />
-    ) : (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-black text-white">
-        {/* tout ton code normal ici */}
-      </div>
-    )}
+      {showSnake && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+          onClick={() => setShowSnake(false)}
+        >
+          <div
+            className="relative flex w-full max-w-4xl flex-col items-center gap-4 rounded-3xl border-4 border-dashed border-white bg-zinc-900 p-8 text-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              animation: "modalSlideIn 0.5s ease-out",
+            }}
+          >
+            <div className="flex w-full items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold">Snake Game</h2>
+              <button
+                onClick={() => setShowSnake(false)}
+                className="rounded-full border-2 border-dashed border-white bg-transparent px-4 py-2 font-semibold transition-all hover:rotate-2 hover:scale-105 hover:border-solid hover:bg-white hover:text-black"
+              >
+                fermer
+              </button>
+            </div>
+            <div className="w-full flex justify-center">
+              <SnakeGame percentageWidth={70} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
