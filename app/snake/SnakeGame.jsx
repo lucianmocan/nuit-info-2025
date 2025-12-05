@@ -25,13 +25,16 @@ class SnakeGame extends React.Component {
       snakeColor: this.props.snakeColor || this.getRandomColor(),
       appleColor: this.props.appleColor || this.getRandomColor(),
       score: 0,
-      highScore: Number(localStorage.getItem('snakeHighScore')) || 0,
+      highScore: 0,
       newHighScore: false,
       framesPerMove: 5,
     }
   }
 
   componentDidMount() {
+    this.setState({
+      highScore: Number(localStorage.getItem('snakeHighScore')) || 0,
+    })
     this.initGame()
     window.addEventListener('keydown', this.handleKeyDown)
     this.gameLoop()

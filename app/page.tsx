@@ -5,11 +5,11 @@ import BackgroundFloatingImage from "./components/movingImg";
 
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function Home() {
+function PageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const viewParam = searchParams.get("view");
@@ -134,10 +134,10 @@ export default function Home() {
             <span className="absolute -left-24 top-1/2 -translate-y-1/2 select-none text-9xl font-serif text-zinc-700 opacity-50">
               «
             </span>
-            <h1 
+            <h1
               key={currentQuoteIndex}
               className="relative z-10 text-7xl md:text-8xl font-bold tracking-tight text-white transition-all hover:scale-110 hover:tracking-wider"
-              style={{ 
+              style={{
                 fontFamily: quotes[currentQuoteIndex].font,
                 animation: `${quotes[currentQuoteIndex].animation} 1.5s cubic-bezier(0.25, 1, 0.5, 1) both`
               }}
@@ -279,9 +279,9 @@ export default function Home() {
                 <div className="text-4xl transition-all group-hover:animate-pulse">
                   📚
                 </div>
-                <h2 className="text-2xl font-bold">les tutos d'antoine</h2>
+                <h2 className="text-2xl font-bold">les tutos d'antoine (et plus)</h2>
                 <p className="text-sm leading-relaxed text-white/80">
-                  podcasts, vidéos, tout le bordel. genre netflix mais éducatif et ça parle de souveraineté numérique
+                  documentation, podcasts, vidéos, tout le bordel.
                 </p>
                 <div className="mt-auto flex items-center gap-2 text-xs font-semibold transition-all group-hover:gap-3">
                   j'y vais <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -398,5 +398,13 @@ export default function Home() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <PageContent />
+    </Suspense>
   );
 }
