@@ -5,11 +5,11 @@ import BackgroundFloatingImage from "./components/movingImg";
 
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function Home() {
+function PageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const viewParam = searchParams.get("view");
@@ -398,5 +398,13 @@ export default function Home() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <PageContent />
+    </Suspense>
   );
 }
