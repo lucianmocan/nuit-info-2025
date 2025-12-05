@@ -19,6 +19,19 @@ class SnakeGame extends React.Component {
       startSnakeSize: 0,
       snake: [],
       apple: {},
+      appleFrames: [      "/imgs/Apple/apple1.png",
+      "/imgs/Apple/apple2.png",
+      "/imgs/Apple/apple3.png",
+      "/imgs/Apple/apple4.png",
+      "/imgs/Apple/apple5.png",
+      "/imgs/Apple/apple6.png",
+      "/imgs/Apple/apple7.png",
+      "/imgs/Apple/apple8.png",
+      "/imgs/Apple/apple9.png",
+      "/imgs/Apple/apple10.png",
+      "/imgs/Apple/apple11.png",
+      "/imgs/Apple/apple12.png"],
+      appleFrameImage: "/imgs/Apple/apple1.png",
       direction: 'right',
       directionChanged: false,
       isGameOver: false,
@@ -28,6 +41,7 @@ class SnakeGame extends React.Component {
       highScore: 0,
       newHighScore: false,
       framesPerMove: 5,
+      actualFrame: 1,
     }
   }
 
@@ -49,6 +63,22 @@ class SnakeGame extends React.Component {
       return;
     }
     
+    const appleFrames = [
+      "/imgs/Apple/apple1.png",
+      "/imgs/Apple/apple2.png",
+      "/imgs/Apple/apple3.png",
+      "/imgs/Apple/apple4.png",
+      "/imgs/Apple/apple5.png",
+      "/imgs/Apple/apple6.png",
+      "/imgs/Apple/apple7.png",
+      "/imgs/Apple/apple8.png",
+      "/imgs/Apple/apple9.png",
+      "/imgs/Apple/apple10.png",
+      "/imgs/Apple/apple11.png",
+      "/imgs/Apple/apple12.png",
+    ];
+
+
     let width = gameBoard.offsetWidth;
     width -= width % 30
     if (width < 30) width = 30
@@ -96,6 +126,11 @@ class SnakeGame extends React.Component {
   gameLoop() {
     let timeoutId = setTimeout(() => {
       if (!this.state.isGameOver) {
+        this.state.actualFrame %= 12
+        this.state.actualFrame += 0.2
+        if (this.state.actualFrame < 1)
+        {this.state.actualFrame = 1.2}
+        this.state.appleFrameImage = "/imgs/Apple/apple" + Math.round(this.state.actualFrame) + ".png"
         for (let i = 0; i < 1; i++)
         {
           this.moveSnake(this.state.framesPerMove)
@@ -380,7 +415,6 @@ class SnakeGame extends React.Component {
         />
       )
     }
-
     return (
       <div
         id='GameBoard'
@@ -401,16 +435,19 @@ class SnakeGame extends React.Component {
             />
           )
         })}
-        <div
-          className='Block'
-          style={{
-            width: this.state.blockWidth,
-            height: this.state.blockHeight,
-            left: this.state.apple.Xpos,
-            top: this.state.apple.Ypos,
-            background: this.state.appleColor,
-          }}
-        />
+          <img
+            src={this.state.appleFrameImage}
+            alt="apple"
+            style={{
+              position: "absolute",
+              width: this.state.blockWidth,
+              height: this.state.blockHeight,
+              left: this.state.apple.Xpos,
+              top: this.state.apple.Ypos,
+              objectFit: "cover",
+            }}
+          />
+
         <div id='Score' className="game-score">
           HIGH-SCORE: {this.state.highScore}&ensp;&ensp;&ensp;&ensp;SCORE:{' '}
           {this.state.score}
