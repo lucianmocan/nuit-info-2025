@@ -16,7 +16,7 @@ const PodcastsPage = () => {
             <div className="flex-grow">
               <h2 className="text-3xl font-bold">Les femmes dans le numérique</h2>
               <p className="mt-2 text-white/80">
-                Céleste et Violette discute sur le rôle des femmes dans l'informatique.
+                Céleste et Violette discutent sur le rôle des femmes dans l'informatique.
               </p>
               <audio controls className="w-full mt-4">
                 <source src="/podcast/femmes_numerique.mp3" type="audio/mpeg" />
