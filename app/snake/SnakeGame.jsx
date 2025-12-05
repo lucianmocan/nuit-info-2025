@@ -121,7 +121,7 @@ class SnakeGame extends React.Component {
         this.state.snakeHeadFrameImage = "/imgs/snake_head/snake_head_" + Math.round(this.state.actualFrame) + ".png"
         this.state.snakeTailFrameImage = "/imgs/snake_tail/snake_tail_" + Math.round(this.state.actualFrame) + ".png"
         this.state.snakeBodyFrameImage = "/imgs/snake_body/snake_body_" + Math.round(this.state.actualFrame) + ".png"
-        this.state.snakeBendFrameImage = "/imgs/snake_bend/snake_bend_" + Math.round(this.state.actualFrame) + ".png"
+        this.state.snakeBendFrameImage = "/imgs/snake_bend/snake_bended_" + Math.round(this.state.actualFrame) + ".png"
         for (let i = 0; i < 1; i++)
         {
           this.moveSnake(this.state.framesPerMove)
@@ -393,6 +393,115 @@ class SnakeGame extends React.Component {
     this.setState({ direction: newDirection })
   }
 
+getDirection(from, to) {
+    const { blockWidth, blockHeight } = this.state;
+    
+    // Calculate distance
+    const dx = to.Xpos - from.Xpos;
+    const dy = to.Ypos - from.Ypos;
+
+    // If distance is huge (e.g., > 1 block), they are on opposite sides of screen
+    // If 'to' is way to the right (dx > blockWidth), it actually wrapped left-to-right, so it's on the 'left'
+    if (dx > blockWidth) return 'left';
+    if (dx < -blockWidth) return 'right';
+    if (dy > blockHeight) return 'up';
+    if (dy < -blockHeight) return 'down';
+
+    // Use a small buffer (0.1) to handle potential floating point math issues
+    if (dx > 0.1) return 'right';
+    if (dx < -0.1) return 'left';
+    if (dy > 0.1) return 'down';
+    if (dy < -0.1) return 'up';
+    
+    return null; // Should not happen if objects are adjacent
+  }
+
+getSegmentStyle(index) {
+    const snake = this.state.snake;
+    const current = snake[index];
+    
+    // Base style for all parts
+    let style = {
+      position: "absolute",
+      width: this.state.blockWidth,
+      height: this.state.blockHeight,
+      left: current.Xpos,
+      top: current.Ypos,
+      objectFit: "cover",
+      transformOrigin: "center center",
+    };
+
+    if (index === 0) {
+      let rotation = 0;
+      switch (this.state.direction) {
+        case 'down': rotation = 0; break;
+        case 'left': rotation = 90; break;
+        case 'up': rotation = 180; break;
+        case 'right': rotation = 270; break; 
+      }
+      return { ...style, transform: `rotate(${rotation}deg)`, src: this.state.snakeHeadFrameImage };
+    }
+
+    if (index === snake.length - 1) {
+      const prev = snake[index - 1]; 
+      const directionToPrev = this.getDirection(current, prev);
+      
+      let rotation = 0;
+      switch (directionToPrev) {
+        case 'down': rotation = 0; break;
+        case 'left': rotation = 90; break;
+        case 'up': rotation = 180; break;
+        case 'right': rotation = 270; break;
+      }
+      return { ...style, transform: `rotate(${rotation}deg)`, src: this.state.snakeTailFrameImage };
+    }
+
+    const prev = snake[index - 1]; 
+    const next = snake[index + 1]; 
+    
+    const dirToPrev = this.getDirection(current, prev);
+    const dirToNext = this.getDirection(current, next);
+
+    // Sort the directions alphabetically to make checking easier
+    // e.g. "down" and "right" becomes "down-right"
+    // e.g. "right" and "down" ALSO becomes "down-right"
+    const cornerKey = [dirToPrev, dirToNext].sort().join('-');
+
+    // If the directions are opposites, it's a straight line
+    if (cornerKey === 'down-up') {
+      return { ...style, transform: `rotate(0deg)`, src: this.state.snakeBodyFrameImage };
+    }
+    if (cornerKey === 'left-right') {
+      return { ...style, transform: `rotate(90deg)`, src: this.state.snakeBodyFrameImage };
+    }
+
+    // Default Bend Image: Connects SOUTH (Down) and EAST (Right)
+    let rotation = 0;
+
+    switch (cornerKey) {
+      case 'down-right': // Connects Bottom and Right
+        rotation = 0;
+        break;
+      case 'down-left':  // Connects Bottom and Left
+        rotation = 90;
+        break;
+      case 'left-up':    // Connects Top and Left
+        rotation = 180;
+        break;
+      case 'right-up':   // Connects Top and Right
+        rotation = 270;
+        break;
+      default:
+        rotation = 0;
+    }
+
+    return { 
+      ...style, 
+      transform: `rotate(${rotation}deg)`, 
+      src: this.state.snakeBendFrameImage 
+    };
+  }
+
   render() {
     // Game over
     if (this.state.isGameOver) {
@@ -406,83 +515,48 @@ class SnakeGame extends React.Component {
         />
       )
     }
+
     return (
       <div
         id='GameBoard'
         className="responsive-game-board"
       >
         {this.state.snake.map((snakePart, index) => {
-  if (index === 0) {
-    // HEAD
-    return (
-      <img
-        key={index}
-        src={this.state.snakeHeadFrameImage}
-        alt="snake head"
-        style={{
-          position: "absolute",
-          width: this.state.blockWidth,
-          height: this.state.blockHeight,
-          left: snakePart.Xpos,
-          top: snakePart.Ypos,
-          objectFit: "cover",
-        }}
-      />
-    )
-  }
+          // Calculate style and image source dynamically
+          // Make sure you have added the 'getSegmentStyle' method from the previous step!
+          const partStyle = this.getSegmentStyle(index);
 
-  // TAIL
-  if (index === this.state.snake.length - 1) {
-    return (
-      <img
-        key={index}
-        src={this.state.snakeTailFrameImage}
-        alt="snake tail"
-        style={{
-          position: "absolute",
-          width: this.state.blockWidth,
-          height: this.state.blockHeight,
-          left: snakePart.Xpos,
-          top: snakePart.Ypos,
-          objectFit: "cover",
-        }}
-      />
-    )
-  }
+          return (
+            <img
+              key={index}
+              src={partStyle.src}
+              alt="snake part"
+              style={{
+                position: partStyle.position,
+                width: partStyle.width,
+                height: partStyle.height,
+                left: partStyle.left,
+                top: partStyle.top,
+                objectFit: partStyle.objectFit,
+                transform: partStyle.transform, // This applies the rotation
+                transformOrigin: partStyle.transformOrigin
+              }}
+            />
+          )
+        })}
 
-  // BODY
-  return (
-      <img
-        key={index}
-        src={this.state.snakeBodyFrameImage}
-        alt="snake body"
-        style={{
-          position: "absolute",
-          width: this.state.blockWidth,
-          height: this.state.blockHeight,
-          left: snakePart.Xpos,
-          top: snakePart.Ypos,
-          objectFit: "cover",
-        }}
-      />
-    )
-  
-
-  
-})}
-
-          <img
-            src={this.state.appleFrameImage}
-            alt="apple"
-            style={{
-              position: "absolute",
-              width: this.state.blockWidth,
-              height: this.state.blockHeight,
-              left: this.state.apple.Xpos,
-              top: this.state.apple.Ypos,
-              objectFit: "cover",
-            }}
-          />
+        <img
+          src={this.state.appleFrameImage}
+          alt="apple"
+          style={{
+            position: "absolute",
+            width: this.state.blockWidth,
+            height: this.state.blockHeight,
+            left: this.state.apple.Xpos,
+            top: this.state.apple.Ypos,
+            objectFit: "cover",
+          }}
+        />
 
         <div id='Score' className="game-score">
           HIGH-SCORE: {this.state.highScore}&ensp;&ensp;&ensp;&ensp;SCORE:{' '}
