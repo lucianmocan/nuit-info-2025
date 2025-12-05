@@ -12,6 +12,12 @@ export default function TutosLibres() {
         "Guide simple pour installer Linux sur ton PC sans prise de tête.",
       emoji: "🐧",
       href: "/tutos/linux-install",
+    },
+    {
+      titre: "Podcasts",
+      description: "Écoutez nos podcasts sur la souveraineté numérique et l'open source.",
+      emoji: "🎙️",
+      href: "/tutos/podcasts",
     }
   ];
 
