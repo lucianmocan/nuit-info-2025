@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 from typing import Optional
 
 import requests
@@ -9,7 +10,7 @@ API_URL = "https://cvedb.shodan.io"
 DEFAULT_COUNT = 1000
 
 
-def get_cves(page: int = 2) -> list[Vulnerability]:
+def get_cves(page: int = 0) -> list[Vulnerability]:
     params = {"skip": page * DEFAULT_COUNT}
     response = requests.request("GET", API_URL + "/cves", params=params)
     response_data = json.loads(response.text)
@@ -18,6 +19,19 @@ def get_cves(page: int = 2) -> list[Vulnerability]:
         if x["product"]:
             print(x)
     return [Vulnerability(**x) for x in response_data["cves"] if x["product"]]
+
+
+def get_chart_data(page: int = 0):
+    vulns = get_cves(page)
+    groups = defaultdict(int)
+    for vuln in vulns:
+        groups[vuln.vendor] += 1
+    avg = sum(groups.values()) / len(groups.keys())
+    return [
+        {"name": key, "nb": groups[key]}
+        for key in groups.keys()
+        if groups[key] > avg / 5
+    ]
 
 
 def get_cve(cveid: str) -> tuple[Optional[Vulnerability], list[CPE]]:

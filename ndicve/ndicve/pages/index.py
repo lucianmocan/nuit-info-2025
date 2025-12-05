@@ -17,12 +17,13 @@ class State(rx.State):
 def bar_simple():
     return rx.recharts.bar_chart(
         rx.recharts.bar(
-            data_key="uv",
+            data_key="nb",
             stroke=rx.color("accent", 9),
             fill=rx.color("accent", 8),
         ),
         rx.recharts.x_axis(data_key="name"),
         rx.recharts.y_axis(),
+        rx.recharts.tooltip(),
         data=State.data,
         width="100%",
         height=250,
@@ -34,6 +35,7 @@ def index() -> rx.Component:
     # Welcome Page (Index)
     return rx.vstack(
         rx.heading("CVE Explorer", size="9"),
+        bar_simple(),
         rx.vstack(
             rx.flex(
                 rx.foreach(
