@@ -116,13 +116,14 @@ export default function DatingPage() {
       </Link>
 
       {!gameOver ? (
-        <div className="flex flex-col items-center gap-12 max-w-2xl w-full">
+        <div className="flex flex-col items-center gap-8 max-w-2xl w-full">
           <div className="text-center space-y-2">
             <h1 className="text-5xl font-black tracking-tighter uppercase italic">smash or pass</h1>
             <p className="text-zinc-400 font-mono">tech edition ({currentIndex + 1}/{items.length})</p>
+            <p className="text-2xl font-bold">Score: <span className="text-purple-400">{score}</span></p>
           </div>
 
-          <div className={`relative w-full bg-zinc-900 rounded-3xl border-4 border-dashed border-white p-12 flex flex-col items-center gap-8 transition-all duration-1000 ease-out ${lastSwipe === 'smash' ? 'rotate-12 translate-x-40 opacity-0' : lastSwipe === 'pass' ? '-rotate-12 -translate-x-40 opacity-0' : 'hover:scale-[1.02]'}`}>
+          <div className={`relative w-full bg-zinc-900 rounded-3xl border-4 border-dashed border-white p-8 flex flex-col items-center gap-6 transition-all duration-1000 ease-out ${lastSwipe === 'smash' ? 'rotate-12 translate-x-40 opacity-0' : lastSwipe === 'pass' ? '-rotate-12 -translate-x-40 opacity-0' : 'hover:scale-[1.02]'}`}>
             
             {/* Stamps */}
             <div className={`absolute top-12 right-12 z-20 rotate-[-15deg] border-8 border-green-500 px-6 py-2 text-6xl font-black text-green-500 opacity-0 transition-opacity duration-200 ${lastSwipe === 'smash' ? 'opacity-100' : ''}`}>
@@ -132,7 +133,7 @@ export default function DatingPage() {
                 CRINGE
             </div>
 
-            <div className="relative w-full h-80">
+            <div className="relative w-full h-64">
                <Image 
                  src={currentItem.image} 
                  alt={currentItem.name} 
@@ -142,22 +143,22 @@ export default function DatingPage() {
                />
             </div>
             
-            <div className="text-center space-y-4">
-              <h2 className="text-6xl font-black uppercase italic tracking-tighter">{currentItem.name}</h2>
-              <p className="text-2xl font-medium text-zinc-300">{currentItem.description}</p>
+            <div className="text-center space-y-2">
+              <h2 className="text-5xl font-black uppercase italic tracking-tighter">{currentItem.name}</h2>
+              <p className="text-xl font-medium text-zinc-300">{currentItem.description}</p>
             </div>
           </div>
 
-          <div className="flex gap-12 w-full justify-center">
+          <div className="flex gap-8 w-full justify-center">
             <button 
               onClick={() => handleSwipe("pass")}
-              className="group relative w-24 h-24 rounded-full border-4 border-dashed border-red-500 bg-transparent text-5xl flex items-center justify-center transition-all hover:scale-110 hover:bg-red-500 hover:text-white hover:border-solid hover:rotate-[-12deg]"
+              className="group relative w-20 h-20 rounded-full border-4 border-dashed border-red-500 bg-transparent text-4xl flex items-center justify-center transition-all hover:scale-110 hover:bg-red-500 hover:text-white hover:border-solid hover:rotate-[-12deg]"
             >
               <span className="group-hover:animate-pulse">❌</span>
             </button>
             <button 
               onClick={() => handleSwipe("smash")}
-              className="group relative w-24 h-24 rounded-full border-4 border-dashed border-green-500 bg-transparent text-5xl flex items-center justify-center transition-all hover:scale-110 hover:bg-green-500 hover:text-white hover:border-solid hover:rotate-[12deg]"
+              className="group relative w-20 h-20 rounded-full border-4 border-dashed border-green-500 bg-transparent text-4xl flex items-center justify-center transition-all hover:scale-110 hover:bg-green-500 hover:text-white hover:border-solid hover:rotate-[12deg]"
             >
               <span className="group-hover:animate-pulse">💚</span>
             </button>
